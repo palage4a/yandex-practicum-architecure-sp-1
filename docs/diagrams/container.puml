@@ -1,0 +1,48 @@
+@startuml
+title WarmHouse container diagram
+
+!include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "User", "A user of the warmhouse system")
+
+System_Boundary(c1, "WarmHouse System", "Manages warm houses") {
+    Container(web, "Web application", "", "Provides user interface in browser")
+    Container(mob, "Mobile application", "", "Provides user interface for smartphone users")
+    Container(userAPI, "User API gateway", "", "Entry point for users requests")
+    Container(sensorAPI, "Sensor API gateway", "", "Entry point for sensors requests")
+    Container_Boundary(u, "User management", "") {
+        Container(users, "User service", "", "Manages users")
+        ContainerDb(userdb, "User storage", "")
+    }
+    Container_Boundary(d, "Device management", "") {
+        Container(device, "Device service", "", "Manages devices")
+        ContainerDb(devicedb, "Device storage", "")
+    }
+    Container(video, "Video service", "", "Streams IP-camera video")
+    ContainerQueue(q, "Message broker", "", "Manages messages")
+}
+
+System_Ext(sensors, "In-house sensors")
+
+Rel(user, web, "uses the system")
+Rel(user, mob, "uses the system")
+
+Rel(web, userAPI, "sends requests", "HTTP/JSON")
+Rel(mob, userAPI, "sends requests", "HTTP/JSON")
+
+Rel(sensors, sensorAPI, "exchange requests", "*")
+
+Rel(userAPI, q, "exchanges events", "message")
+
+Rel(sensorAPI, q, "exchange events", "message")
+Rel(users, q, "exchanges events", "message")
+Rel(users, userdb, "stores user data", "SQL")
+Rel(video, q, "exchanges events", "message")
+Rel(device, q, "exchanges events", "message")
+Rel(device, devicedb, "stores device data", "SQL")
+
+Rel(video, web, "sends video data", "WebRTC")
+Rel(video, mob, "sends video data", "HLS")
+Rel(video, sensors, "streams video", "RTSP")
+
+@enduml

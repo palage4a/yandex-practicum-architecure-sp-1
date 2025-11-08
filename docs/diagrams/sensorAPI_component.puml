@@ -1,0 +1,21 @@
+@startuml
+title WarmHouse Sensor API component diagram
+
+!include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+
+System_Boundary(wh, "WarmHouse system") {
+    Container(sensorAPI, "WarmHouse Sensor API", "Manages sensor requests") {
+        Component(c, "Controller", "Expose the system api")
+        Component(auth, "Autothentification component")
+    }
+    ContainerQueue(q, "Message broker", "")
+}
+
+System_Ext(sensor, "In-house sensors")
+
+Rel(q, c, "exchanges events")
+Rel(c, sensor, "exchanges requests")
+Rel(c, auth, "authorizes requests")
+
+@enduml

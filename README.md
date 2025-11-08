@@ -63,8 +63,7 @@
 [Посетите Яндекс](https://ya.ru/)
 ```
 
-[Context diagram](docs/diagrams/context.puml)
-![Context diagram](docs/diagrams/context.png)
+![Context](docs/diagrams/context.png)
 
 # Задание 2. Проектирование микросервисной архитектуры
 
@@ -74,9 +73,22 @@
 
 Добавьте диаграмму.
 
+![Containers](docs/diagrams/container.png)
+
 **Диаграмма компонентов (Components)**
 
 Добавьте диаграмму для каждого из выделенных микросервисов.
+
+![UserAPI Component](docs/diagrams/userAPI_component.png)
+
+![SensorAPI Component](docs/diagrams/sensorAPI_component.png)
+
+![User Component](docs/diagrams/user_component.png)
+
+![Device Component](docs/diagrams/device_component.png)
+
+![Video Component](docs/diagrams/video_component.png)
+
 
 **Диаграмма кода (Code)**
 

@@ -1,0 +1,30 @@
+@startuml
+title WarmHouse Video component diagram
+
+!include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+System_Boundary(warmhouse, "WarmHouse system") {
+    Component(web, "Web application", "")
+    Component(mob, "Mobile application", "")
+
+    Container(video, "WarmHouse Video", "", "Streams video content") {
+        Component(controller, "Controller", "", "Expose video API")
+        Component_Ext(media, "Media server", "transocodes video")
+        ComponentDb(storage, "Media storage", "stores video data")
+    }
+
+    ContainerQueue(q, "Message broker", "")
+}
+
+System_Ext(sensor, "In-house sensors")
+
+Rel(web, controller, "streams video", "WebRTC")
+Rel(mob, controller, "streams video", "HLS")
+Rel(controller, sensor, "streams video", "binary")
+Rel(controller, q, "exchanges events", "message")
+
+
+Rel(controller, media, "sends video data for transcoding")
+Rel(controller, storage, "streams/stores video data")
+
+@enduml
