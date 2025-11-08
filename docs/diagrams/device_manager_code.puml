@@ -1,0 +1,39 @@
+@startuml
+title WarmHouse Device Manager Code Diagram
+
+
+class Device {
+    +String name
+    +List<State> states
+    +updateState(State)
+}
+
+class State {
+    +String name
+    +String value
+    +List<Command> commands
+    +update(Command)
+    +addCommand(Command)
+}
+
+class Command {
+    +String name
+    +Operation operation
+    +String request_pattern
+    +String response_success
+    +String response_error
+    +build(String)
+}
+
+enum Operation {
+    ADD
+    SUB
+    SET
+    GET
+}
+
+Device "1" -- "0..*" State : includes
+State "1" -- "0..*" Command : has
+Command "1" -- "1" Operation : has
+
+@enduml

@@ -94,6 +94,9 @@
 
 Добавьте одну диаграмму или несколько.
 
+![User Manager code](docs/diagrams/user_manager_code.png)
+![Device Manager code](docs/diagrams/device_manager_code.png)
+
 # Задание 3. Разработка ER-диаграммы
 
 Добавьте сюда ER-диаграмму. Она должна отражать ключевые сущности системы, их атрибуты и тип связей между ними.

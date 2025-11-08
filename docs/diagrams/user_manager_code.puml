@@ -1,0 +1,24 @@
+@startuml
+title WarmHouse Device Manager Code Diagram
+
+class House {
+    +String name
+    +List<Room> rooms
+    +addRoom(Room)
+}
+
+class Room {
+    +String name
+    +List<Device> devices
+}
+
+class User {
+    +String name
+    +List<House> houses
+}
+
+User "1" -- "0..*" House : has
+House "1" -- "0..*" Room : has
+Room "1" -- "0..*" Device : includes
+
+@enduml
