@@ -6,6 +6,7 @@ title WarmHouse context diagram
 Person(user, "User", "A user of the warmhouse system")
 
 System(WarmHouse, "WarmHouse System", "Managing warm system")
+
 System_Ext(sensors, "In-house sensors", "Sensors manages temperature in house")
 
 Rel(user, WarmHouse, "uses the system")

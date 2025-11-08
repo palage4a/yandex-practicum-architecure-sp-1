@@ -1,0 +1,22 @@
+@startuml
+title WarmHouse User component diagram
+
+!include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+System_Boundary(warmhouse, "WarmHouse system") {
+    Container(user, "WarmHouse User", "", "Manages users") {
+        Component(broker, "Message handler", "", "Exchanges messages with message queue")
+        Component(manager, "User manager", "", "User management buisness logic")
+        Component(repo, "User repository", "", "Stores users in DB")
+    }
+
+    ContainerQueue(q, "Message broker", "")
+    ContainerDb(db, "User storage", "")
+}
+
+Rel(broker, q, "publish/consume events")
+Rel(broker, manager, "reads/writes events")
+Rel(manager, repo, "read/writes data from storage")
+Rel(repo, db, "sends SQL")
+
+@enduml

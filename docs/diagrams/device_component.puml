@@ -1,0 +1,22 @@
+@startuml
+title WarmHouse Device component diagram
+
+!include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+System_Boundary(warmhouse, "WarmHouse system") {
+    Container(device, "WarmHouse Device", "", "Manages devices") {
+        Component(broker, "Message handler", "", "Exchanges messages with message queue")
+        Component(manager, "Device manager", "", "Device management buisness logic")
+        Component(repo, "Device repository", "", "Stores devices in DB")
+    }
+
+    ContainerQueue(q, "Message broker", "")
+    ContainerDb(db, "Device storage", "")
+}
+
+Rel(broker, q, "publish/consume events")
+Rel(broker, manager, "reads/writes events")
+Rel(manager, repo, "read/writes data from storage")
+Rel(repo, db, "sends SQL")
+
+@enduml

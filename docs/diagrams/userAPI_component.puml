@@ -1,0 +1,23 @@
+@startuml
+title WarmHouse User API component diagram
+
+!include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+System_Boundary(warmhouse, "WarmHouse system") {
+    Component(web, "Web application", "")
+    Component(mob, "Mobile application", "")
+
+    Container(userAPI, "WarmHouse User API", "Manages user requests") {
+        Component(c, "Controller", "Expose the system api")
+        Component(auth, "Authorization component")
+    }
+
+    ContainerQueue(q, "Message broker", "")
+}
+
+Rel(web, c, "sends requests", "HTTP/JSON")
+Rel(mob, c, "sends requests", "HTTP/JSON")
+Rel(c, auth, "authorize requests")
+Rel(c, q, "sends events", "message")
+
+@enduml
