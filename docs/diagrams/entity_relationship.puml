@@ -1,0 +1,52 @@
+@startuml
+
+title WarmHouse Entity Relationship diagram
+
+entity User {
+    +String id
+    +String name
+    +String phone
+    +House house
+}
+
+entity House {
+    +String id
+    +String name
+    +List<Room> rooms
+}
+
+entity Room {
+    +String name
+    +List<Device> devices
+}
+
+entity Device {
+    +String name
+    +List<State> states
+}
+
+entity State {
+    +String name
+    +String value
+}
+
+entity Command {
+    +String name
+    +Operation operation
+}
+
+enum Operation {
+    ADD
+    SUB
+    SET
+    GET
+}
+
+User "1" -- "0..*" House : has
+House "1" -- "0..*" Room : has
+Room "1" -- "0..*" Device : includes
+Device "1" -- "0..*" State : includes
+State "1" -- "0..*" Command : has
+Command "1" -- "1" Operation: includes
+
+@enduml
