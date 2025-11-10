@@ -1,0 +1,468 @@
+openapi: 3.0.4
+info:
+  title: Warmhouse User API
+  version: 1.0.0
+servers:
+  - url: https://api.warmhouse.ru/v1
+paths:
+  /auth:
+    post:
+      summary: Request authorization code.
+      requestBody:
+        description: Phone number for sending authorization code
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auth'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid data
+        '502':
+          description: Internal server error
+  /users/{userUID}:
+    get:
+      summary: Get user.
+      parameters:
+        - name: userUID
+          in: path
+          description: UID of user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid data
+        '404':
+          description: User not found
+        '502':
+          description: Internal server error
+    put:
+      summary: Update user.
+      parameters:
+        - name: userUID
+          in: path
+          description: UID of user
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: User data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatedUser'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid data
+        '404':
+          description: User not found
+        '502':
+          description: Internal server error
+  /users/{userUID}/devices:
+    get:
+      summary: Get user's devices.
+      parameters:
+        - name: userUID
+          in: path
+          description: UID of user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  devices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Device'
+        '400':
+          description: Invalid data
+        '404':
+          description: User not found
+        '502':
+          description: Internal server error
+    post:
+      summary: Register user's device.
+      parameters:
+        - name: userUID
+          in: path
+          description: UID of user
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Device data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewDevice'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '400':
+          description: Invalid data
+        '404':
+          description: User not found
+        '502':
+          description: Internal server error
+  /devices/{deviceUID}:
+    get:
+      summary: Get device.
+      parameters:
+        - name: deviceUID
+          in: path
+          description: UID of device
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '400':
+          description: Invalid data
+        '404':
+          description: Device not found
+        '502':
+          description: Internal server error
+    put:
+      summary: Update device.
+      parameters:
+        - name: deviceUID
+          in: path
+          description: UID of device
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Device data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatedDevice'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '400':
+          description: Invalid data
+        '404':
+          description: Device not found
+        '502':
+          description: Internal server error
+  /devices/{deviceUID}/states:
+    get:
+      summary: Get states for device.
+      parameters:
+        - name: deviceUID
+          in: path
+          description: UID of device
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  states:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/State'
+        '400':
+          description: Invalid data
+        '404':
+          description: Device or its states not found
+        '502':
+          description: Internal server error
+    post:
+      summary: Add new device's state.
+      parameters:
+        - name: deviceUID
+          in: path
+          description: UID of device
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: State data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewState'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/State'
+        '400':
+          description: Invalid data
+        '404':
+          description: Device not found
+        '502':
+          description: Internal server error
+  /states/{stateUID}/commands:
+    get:
+      summary: Get commands for device states.
+      parameters:
+        - name: stateUID
+          in: path
+          description: UID of state
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  commands:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Command'
+        '400':
+          description: Invalid data
+        '404':
+          description: State not found
+        '502':
+          description: Internal server error
+    post:
+      summary: Add new device state command.
+      parameters:
+        - name: stateUID
+          in: path
+          description: UID of state
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: State data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCommand'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Command'
+        '400':
+          description: Invalid data
+        '404':
+          description: State not found
+        '502':
+          description: Internal server error
+  /commands/{commandUID}:
+    put:
+      summary: Update command.
+      parameters:
+        - name: commandUID
+          in: path
+          description: UID of command
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Command data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatedCommand'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Command'
+        '400':
+          description: Invalid data
+        '404':
+          description: Command not found
+        '502':
+          description: Internal server error
+  /commands/{commandUID}/execute:
+    post:
+      summary: Execute command.
+      parameters:
+        - name: commandUID
+          in: path
+          description: UID of command
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Command data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteCommand'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandResponse'
+        '400':
+          description: Invalid data
+        '404':
+          description: Command not found
+        '502':
+          description: Internal server error
+
+components:
+  schemas:
+    Auth:
+      type: object
+      properties:
+        phone:
+          type: string
+    User:
+      type: object
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+        phone:
+          type: string
+    UpdatedUser:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+
+    NewDevice:
+      type: object
+      properties:
+        name:
+          type: string
+    Device:
+      type: object
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+    UpdatedDevice:
+      type: object
+      properties:
+        name:
+          type: string
+
+    NewState:
+      type: object
+      properties:
+        name:
+          type: string
+    State:
+      type: object
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+
+    NewCommand:
+      type: object
+      properties:
+        name:
+          type: string
+        operation:
+          type: string
+        request_pattern:
+          type: string
+        response_success:
+          type: string
+        response_error:
+          type: string
+    Command:
+      type: object
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+        operation:
+          type: string
+        request_pattern:
+          type: string
+        response_success:
+          type: string
+        response_error:
+          type: string
+    UpdatedCommand:
+      type: object
+      properties:
+        name:
+          type: string
+        operation:
+          type: string
+        request_pattern:
+          type: string
+        response_success:
+          type: string
+        response_error:
+          type: string
+    ExecuteCommand:
+      type: object
+      properties:
+        payload:
+          type: string
+    CommandResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        error:
+          type: string
+        payload:
+          type: string
